@@ -1,0 +1,305 @@
+type Query {
+  getIcdCodes: [IcdCodes!]!
+  getIcdSubCodes: [IcdSubCodes!]!
+  getHospitals: [Hospital!]!
+  searchPatients(email: String!): [SearchPatientData!]!
+  getPatient(patientId: String!): Patient
+}
+
+type SearchPatientData {
+  id: ID!
+  lastName: String!
+  firstName: String!
+  middleName: String!
+  dob: DateTime!
+  bloodGroup: String!
+  sex: String!
+  contact1: String!
+  contact2: String!
+  email: String!
+}
+
+type Mutation {
+  adminSignup(
+    email: String!
+    password: String!
+  ): AuthPayloadAdmin!
+  adminLogin(
+    email: String
+    password: String!
+  ): AuthPayloadAdmin!
+  addHospital(
+    name: String!
+    address: String!
+    city: String!
+    district: String!
+    pincode: Int!
+    countryCode: Int!
+  ): Hospital!
+  addMedicalPractitioner(
+    mpId: Int!
+    lastName: String!
+    firstName: String!
+    middleName: String!
+    email: String!
+    password: String!
+    dob: DateTime!
+    sex: String!
+    address: String!
+    degree: String!
+    field: String!
+    hospitalId: String!
+  ): MedicalPractitioner!
+  medicalPractitionerLogin(
+    email: String!
+    password: String!
+  ): AuthPayloadMedicalPractitioner!
+  addPatient(
+  lastName: String!
+  firstName: String!
+  middleName: String!
+  motherName: String!
+  dob: DateTime!
+  bloodGroup: String!
+  sex: String!
+  religion: String!
+  maritalStatus: String!
+  primaryLanguage: String!
+  birthPlace: String!
+  address: String!
+  countryCode: Int!
+  occupation: String!
+  contact1: String!
+  contact2: String!
+  email: String!
+  password: String!
+  socioEconomicStatus: String!
+  immunizationStatus: String!
+  allergyStatus: Boolean!
+  organDonorStatus: Boolean!
+  PMH: String!
+  DHx: String!
+  Ca: String!
+  IDDM: String!
+  NIDDM: String!
+  MI: String!
+  AF: String!): Patient!
+  patientLogin(
+    email: String!
+    password: String!
+  ): AuthPayloadPatient!
+  addInsurance(
+    status: Boolean!
+    companyName: String!
+  ): Patient!
+  addCareProvider(
+    firstName: String!
+    lastName: String!
+    middleName: String!
+    address: String!
+    cityId: Int!
+    stateId: Int!
+    pinCode: Int!
+    countryCode: Int!
+    contact1: String!
+    email: String!
+  ): Patient!
+  requestPatientAccess(patientId: String!): AccessRequest!
+  denyAccessRequest(accessRequestId: String!): AccessRequest
+  acceptAccessRequest(accessRequestId: String!): AccessRequest
+  addPatientCase(
+    patientId: String!
+    mpId: String!
+    icdCodeId: String!
+    icdSubCodeId: String!
+    hospitalId: String!
+    HPC: String!
+    MoI: String
+    DnV: String
+    clinicNote: String!
+    diagnosisType: String!
+    currentClinicalStatus: String!
+  ): Patient
+  addPatientRecord(
+    patientId: String!
+    patientCaseId: String!
+    mpId: String!
+    hospitalId: String!
+    observation: String!
+    Tx: String!
+    suggesstions: String
+    cevsSp: Int!
+    cevsDp: Int!
+    cePr: Int!
+    ceRr: Int!
+    ceHeight: Int!
+    ceWeight: Int!
+    medication: String!
+    advice: String
+    query: String
+    followUpObservation: String
+  ): PatientCase
+}
+
+type AuthPayloadPatient {
+  token: String!
+  patient: Patient!
+}
+
+type AuthPayloadMedicalPractitioner {
+  token: String!
+  medicalPractitioner: MedicalPractitioner!
+}
+
+type AuthPayloadAdmin {
+  token: String!
+  admin: Admin!
+}
+
+type Admin {
+  id: ID!
+  email: String!
+}
+
+scalar DateTime
+
+type IcdCodes {
+  id: ID!
+  icdCode: String!
+  commonName: String!
+}
+
+type IcdSubCodes {
+  id: ID!
+  icdSubCode: String!
+  scientificName: String!
+  icdCode: IcdCodes!
+}
+
+type MedicalPractitioner {
+  id: ID!
+  mpId: Int!
+  lastName: String!
+  firstName: String!
+  middleName: String!
+  email: String!
+  dob: DateTime!
+  sex: String!
+  address: String!
+  degree: String!
+  field: String!
+  hospital: Hospital!
+  registeredAt: DateTime!
+  accessiblePatients: [Patient]
+}
+
+type Hospital {
+  id: ID!
+  name: String!
+  address: String!
+  city: String!
+  district: String!
+  pincode: Int!
+  countryCode: Int!
+}
+
+type Patient {
+  id: ID!
+  lastName: String!
+  firstName: String!
+  middleName: String!
+  motherName: String!
+  dob: DateTime!
+  bloodGroup: String!
+  sex: String!
+  religion: String!
+  maritalStatus: String!
+  primaryLanguage: String!
+  birthPlace: String!
+  address: String!
+  countryCode: Int!
+  occupation: String!
+  contact1: String!
+  contact2: String!
+  email: String!
+  socioEconomicStatus: String!
+  immunizationStatus: String!
+  allergyStatus: Boolean!
+  organDonorStatus: Boolean!
+  PMH: String!
+  DHx: String!
+  Ca: String!
+  IDDM: String!
+  NIDDM: String!
+  MI: String!
+  AF: String!
+  registeredAt: DateTime!
+  careProvider: CareProvider
+  insurance: Insurance
+  patientCase: PatientCase
+  accessRequests: [AccessRequest!]!
+}
+
+type AccessRequest {
+  id: ID!
+  medicalPractitionerFirstName: String!
+  medicalPractitionerLastName: String!
+  medicalPractitionerId: String!
+}
+
+type PatientCase {
+  id: ID!
+  mp: MedicalPractitioner!
+  icdCode: IcdCodes!
+  icdSubCode: IcdSubCodes!
+  hospital: Hospital!
+  HPC: String!
+  MoI: String
+  DnV: String
+  clinicNote: String!
+  diagnosisType: String!
+  currentClinicalStatus: String!
+  createdAt: DateTime!
+  records: [PatientRecord!]!
+}
+
+type PatientRecord {
+  id: ID!
+  visitNo: Int!
+  encounterDate: DateTime!
+  mp: MedicalPractitioner!
+  hospital: Hospital!
+  observation: String!
+  Tx: String!
+  suggesstions: String
+  cevsSp: Int!
+  cevsDp: Int!
+  cePr: Int!
+  ceRr: Int!
+  ceHeight: Int!
+  ceWeight: Int!
+  medication: String!
+  advice: String
+  query: String
+  followUpObservation: String
+}
+
+type CareProvider {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  middleName: String!
+  address: String!
+  cityId: Int!
+  StateId: Int!
+  pinCode: Int!
+  countryCode: Int!
+  contact1: String!
+  email: String!
+}
+
+type Insurance {
+  id: ID!
+  status: Boolean!
+  companyName: String!
+}
