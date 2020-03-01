@@ -1,6 +1,10 @@
 const { getIcdCodes, getIcdSubCodes } = require('./IcdCodes');
 const { getHospitals } = require('./Hospital');
-const { searchPatients, getPatient } = require('./Patient');
+const {
+  searchPatients,
+  getPatient,
+  getAccessiblePatients
+} = require('./Patient');
 
 module.exports = {
   getIcdCodes,
@@ -8,4 +12,5 @@ module.exports = {
   getHospitals,
   searchPatients,
   getPatient,
-}
+  getAccessiblePatients
+};

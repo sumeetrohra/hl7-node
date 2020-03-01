@@ -4,6 +4,7 @@ type Query {
   getHospitals: [Hospital!]!
   searchPatients(email: String!): [SearchPatientData!]!
   getPatient(patientId: String!): Patient
+  getAccessiblePatients: [Patient]
 }
 
 type SearchPatientData {
@@ -20,14 +21,8 @@ type SearchPatientData {
 }
 
 type Mutation {
-  adminSignup(
-    email: String!
-    password: String!
-  ): AuthPayloadAdmin!
-  adminLogin(
-    email: String
-    password: String!
-  ): AuthPayloadAdmin!
+  adminSignup(email: String!, password: String!): AuthPayloadAdmin!
+  adminLogin(email: String, password: String!): AuthPayloadAdmin!
   addHospital(
     name: String!
     address: String!
@@ -55,43 +50,38 @@ type Mutation {
     password: String!
   ): AuthPayloadMedicalPractitioner!
   addPatient(
-  lastName: String!
-  firstName: String!
-  middleName: String!
-  motherName: String!
-  dob: DateTime!
-  bloodGroup: String!
-  sex: String!
-  religion: String!
-  maritalStatus: String!
-  primaryLanguage: String!
-  birthPlace: String!
-  address: String!
-  countryCode: Int!
-  occupation: String!
-  contact1: String!
-  contact2: String!
-  email: String!
-  password: String!
-  socioEconomicStatus: String!
-  immunizationStatus: String!
-  allergyStatus: Boolean!
-  organDonorStatus: Boolean!
-  PMH: String!
-  DHx: String!
-  Ca: String!
-  IDDM: String!
-  NIDDM: String!
-  MI: String!
-  AF: String!): Patient!
-  patientLogin(
+    lastName: String!
+    firstName: String!
+    middleName: String!
+    motherName: String!
+    dob: DateTime!
+    bloodGroup: String!
+    sex: String!
+    religion: String!
+    maritalStatus: String!
+    primaryLanguage: String!
+    birthPlace: String!
+    address: String!
+    countryCode: Int!
+    occupation: String!
+    contact1: String!
+    contact2: String!
     email: String!
     password: String!
-  ): AuthPayloadPatient!
-  addInsurance(
-    status: Boolean!
-    companyName: String!
+    socioEconomicStatus: String!
+    immunizationStatus: String!
+    allergyStatus: Boolean!
+    organDonorStatus: Boolean!
+    PMH: String!
+    DHx: String!
+    Ca: String!
+    IDDM: String!
+    NIDDM: String!
+    MI: String!
+    AF: String!
   ): Patient!
+  patientLogin(email: String!, password: String!): AuthPayloadPatient!
+  addInsurance(status: Boolean!, companyName: String!): Patient!
   addCareProvider(
     firstName: String!
     lastName: String!
