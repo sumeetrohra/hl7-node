@@ -5,6 +5,7 @@ type Query {
   searchPatients(email: String!): [SearchPatientData!]!
   getPatient(patientId: String!): Patient
   getAccessiblePatients: [Patient]
+  getPatientData: Patient
 }
 
 type SearchPatientData {

@@ -3,7 +3,8 @@ const { getHospitals } = require('./Hospital');
 const {
   searchPatients,
   getPatient,
-  getAccessiblePatients
+  getAccessiblePatients,
+  getPatientData
 } = require('./Patient');
 
 module.exports = {
@@ -12,5 +13,6 @@ module.exports = {
   getHospitals,
   searchPatients,
   getPatient,
-  getAccessiblePatients
+  getAccessiblePatients,
+  getPatientData
 };

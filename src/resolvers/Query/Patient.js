@@ -1,4 +1,4 @@
-const { getMedicalPractitionerId } = require('../../utils');
+const { getMedicalPractitionerId, getPatientId } = require('../../utils');
 const { hasPatientAccess } = require('../Mutation/MedicalPractitioner');
 
 async function searchPatients(parent, args, context, info) {
@@ -54,8 +54,14 @@ async function getAccessiblePatients(parent, args, context, info) {
     .accessiblePatients();
 }
 
+async function getPatientData(parent, args, context, info) {
+  const { patientId } = getPatientId(context);
+  return context.prisma.patient({ id: patientId });
+}
+
 module.exports = {
   searchPatients,
   getPatient,
-  getAccessiblePatients
+  getAccessiblePatients,
+  getPatientData
 };
