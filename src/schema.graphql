@@ -131,6 +131,12 @@ type Mutation {
     query: String
     followUpObservation: String
   ): PatientCase
+  addPatientRecordFile(
+    patientId: String!
+    patientRecordId: String!
+    fileName: String!
+    fileUrl: String!
+  ): PatientRecord
 }
 
 type AuthPayloadPatient {

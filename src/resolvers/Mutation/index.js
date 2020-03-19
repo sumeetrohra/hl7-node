@@ -13,7 +13,8 @@ const {
   denyAccessRequest,
   acceptAccessRequest,
   addPatientCase,
-  addPatientRecord
+  addPatientRecord,
+  addPatientRecordFile
 } = require('./Patient');
 
 module.exports = {
@@ -31,4 +32,5 @@ module.exports = {
   acceptAccessRequest,
   addPatientCase,
   addPatientRecord,
-}
+  addPatientRecordFile
+};

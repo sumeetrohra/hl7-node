@@ -223,6 +223,31 @@ async function addPatientRecord(parent, args, context, info) {
   });
 }
 
+async function addPatientRecordFile(parent, args, context, info) {
+  const { medicalPractitionerId } = getMedicalPractitionerId(context);
+
+  const hasAccess = await hasPatientAccess({
+    context,
+    medicalPractitionerId,
+    patientId: args.patientId
+  });
+  if (!hasAccess) {
+    throw new Error("You don't have the access to this patient");
+  }
+
+  return context.prisma.updatePatientRecord({
+    where: { id: args.patientRecordId },
+    data: {
+      files: {
+        create: {
+          name: args.fileName,
+          url: args.fileUrl
+        }
+      }
+    }
+  });
+}
+
 module.exports = {
   addPatient,
   patientLogin,
@@ -231,5 +256,6 @@ module.exports = {
   denyAccessRequest,
   acceptAccessRequest,
   addPatientCase,
-  addPatientRecord
+  addPatientRecord,
+  addPatientRecordFile
 };
