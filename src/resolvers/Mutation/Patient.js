@@ -1,7 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { JWT_APP_SECRET, getMedicalPractitionerId, getPatientId } = require('../../utils');
+const {
+  JWT_APP_SECRET,
+  getMedicalPractitionerId,
+  getPatientId
+} = require('../../utils');
 const { hasPatientAccess } = require('./MedicalPractitioner');
 
 async function addPatient(parent, args, context, info) {
@@ -42,7 +46,7 @@ async function addPatient(parent, args, context, info) {
           IDDM: args.IDDM,
           NIDDM: args.NIDDM,
           MI: args.MI,
-          AF: args.AF,
+          AF: args.AF
         }
       }
     }
@@ -57,7 +61,10 @@ async function patientLogin(parent, args, context, info) {
     throw new Error('Invalid Email');
   }
 
-  const doesPasswordMatch = await bcrypt.compare(args.password, patient.password);
+  const doesPasswordMatch = await bcrypt.compare(
+    args.password,
+    patient.password
+  );
   if (!doesPasswordMatch) {
     throw new Error('Invalid Password');
   }
@@ -78,7 +85,7 @@ async function addInsurance(parent, args, context, info) {
       insurance: {
         create: {
           status: args.status,
-          companyName: args.companyName,
+          companyName: args.companyName
         }
       }
     }
@@ -102,7 +109,7 @@ async function addCareProvider(parent, args, context, info) {
           pinCode: args.pinCode,
           countryCode: args.countryCode,
           contact1: args.contact1,
-          email: args.email,
+          email: args.email
         }
       }
     }
@@ -120,7 +127,9 @@ async function acceptAccessRequest(parent, args, context, info) {
     throw new Error('please provide valid access request id');
   }
   const { patientId } = getPatientId(context);
-  const request = await context.prisma.accessRequest({ id: args.accessRequestId });
+  const request = await context.prisma.accessRequest({
+    id: args.accessRequestId
+  });
   await context.prisma.updateMedicalPractitioner({
     where: { id: request.medicalPractitionerId },
     data: {
@@ -133,12 +142,18 @@ async function acceptAccessRequest(parent, args, context, info) {
 async function addPatientCase(parent, args, context, info) {
   const { medicalPractitionerId } = getMedicalPractitionerId(context);
 
-  const hasAccess = await hasPatientAccess({ context, medicalPractitionerId, patientId: args.patientId });
+  const hasAccess = await hasPatientAccess({
+    context,
+    medicalPractitionerId,
+    patientId: args.patientId
+  });
   if (!hasAccess) {
-    throw new Error('You don\'t have the access to this patient');
+    throw new Error("You don't have the access to this patient");
   }
 
-  const caseExists = await context.prisma.patient({ id: args.patientId }).patientCase();
+  const caseExists = await context.prisma
+    .patient({ id: args.patientId })
+    .patientCase();
   if (caseExists) {
     throw new Error('Case already exists');
   }
@@ -157,7 +172,7 @@ async function addPatientCase(parent, args, context, info) {
           DnV: args.DnV,
           clinicNote: args.clinicNote,
           diagnosisType: args.diagnosisType,
-          currentClinicalStatus: args.currentClinicalStatus,
+          currentClinicalStatus: args.currentClinicalStatus
         }
       }
     }
@@ -167,19 +182,26 @@ async function addPatientCase(parent, args, context, info) {
 async function addPatientRecord(parent, args, context, info) {
   const { medicalPractitionerId } = getMedicalPractitionerId(context);
 
-  const hasAccess = await hasPatientAccess({ context, medicalPractitionerId, patientId: args.patientId });
+  const hasAccess = await hasPatientAccess({
+    context,
+    medicalPractitionerId,
+    patientId: args.patientId
+  });
   if (!hasAccess) {
-    throw new Error('You don\'t have the access to this patient');
+    throw new Error("You don't have the access to this patient");
   }
 
-  const patientRecords = await context.prisma.patientCase({ id: args.patientCaseId }).records();
+  const patientRecords = await context.prisma
+    .patientCase({ id: args.patientCaseId })
+    .records();
 
   return context.prisma.updatePatientCase({
     where: { id: args.patientCaseId },
     data: {
       records: {
         create: {
-          visitNo: patientRecords.length + 1,
+          visitNo: patientRecords.length + 1 || 1,
+          eventType: args.eventType,
           mp: { connect: { id: args.mpId } },
           hospital: { connect: { id: args.hospitalId } },
           observation: args.observation,
@@ -194,7 +216,7 @@ async function addPatientRecord(parent, args, context, info) {
           medication: args.medication,
           advice: args.advice,
           query: args.query,
-          followUpObservation: args.followUpObservation,
+          followUpObservation: args.followUpObservation
         }
       }
     }
@@ -209,5 +231,5 @@ module.exports = {
   denyAccessRequest,
   acceptAccessRequest,
   addPatientCase,
-  addPatientRecord,
+  addPatientRecord
 };

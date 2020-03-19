@@ -112,6 +112,7 @@ type Mutation {
     currentClinicalStatus: String!
   ): Patient
   addPatientRecord(
+    eventType: String!
     patientId: String!
     patientCaseId: String!
     mpId: String!
@@ -256,6 +257,7 @@ type PatientCase {
 
 type PatientRecord {
   id: ID!
+  eventType: String!
   visitNo: Int!
   encounterDate: DateTime!
   mp: MedicalPractitioner!
@@ -273,6 +275,13 @@ type PatientRecord {
   advice: String
   query: String
   followUpObservation: String
+  files: [File]
+}
+
+type File {
+  id: ID!
+  name: String!
+  url: String!
 }
 
 type CareProvider {

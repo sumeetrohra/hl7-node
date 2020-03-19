@@ -41,6 +41,10 @@ var models = [
     embedded: false
   },
   {
+    name: "File",
+    embedded: false
+  },
+  {
     name: "CareProvider",
     embedded: false
   },
@@ -52,6 +56,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/sumeet-rohra/hl7-node/dev`
+  endpoint: `${process.env["PRISMA_STAGE_ENDPOINT"]}`
 });
 exports.prisma = new exports.Prisma();

@@ -19,6 +19,7 @@ export interface Exists {
   accessRequest: (where?: AccessRequestWhereInput) => Promise<boolean>;
   admin: (where?: AdminWhereInput) => Promise<boolean>;
   careProvider: (where?: CareProviderWhereInput) => Promise<boolean>;
+  file: (where?: FileWhereInput) => Promise<boolean>;
   hospital: (where?: HospitalWhereInput) => Promise<boolean>;
   icdCodes: (where?: IcdCodesWhereInput) => Promise<boolean>;
   icdSubCodes: (where?: IcdSubCodesWhereInput) => Promise<boolean>;
@@ -111,6 +112,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CareProviderConnectionPromise;
+  file: (where: FileWhereUniqueInput) => FileNullablePromise;
+  files: (args?: {
+    where?: FileWhereInput;
+    orderBy?: FileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<File>;
+  filesConnection: (args?: {
+    where?: FileWhereInput;
+    orderBy?: FileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FileConnectionPromise;
   hospital: (where: HospitalWhereUniqueInput) => HospitalNullablePromise;
   hospitals: (args?: {
     where?: HospitalWhereInput;
@@ -333,6 +353,22 @@ export interface Prisma {
   deleteManyCareProviders: (
     where?: CareProviderWhereInput
   ) => BatchPayloadPromise;
+  createFile: (data: FileCreateInput) => FilePromise;
+  updateFile: (args: {
+    data: FileUpdateInput;
+    where: FileWhereUniqueInput;
+  }) => FilePromise;
+  updateManyFiles: (args: {
+    data: FileUpdateManyMutationInput;
+    where?: FileWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFile: (args: {
+    where: FileWhereUniqueInput;
+    create: FileCreateInput;
+    update: FileUpdateInput;
+  }) => FilePromise;
+  deleteFile: (where: FileWhereUniqueInput) => FilePromise;
+  deleteManyFiles: (where?: FileWhereInput) => BatchPayloadPromise;
   createHospital: (data: HospitalCreateInput) => HospitalPromise;
   updateHospital: (args: {
     data: HospitalUpdateInput;
@@ -493,6 +529,9 @@ export interface Subscription {
   careProvider: (
     where?: CareProviderSubscriptionWhereInput
   ) => CareProviderSubscriptionPayloadSubscription;
+  file: (
+    where?: FileSubscriptionWhereInput
+  ) => FileSubscriptionPayloadSubscription;
   hospital: (
     where?: HospitalSubscriptionWhereInput
   ) => HospitalSubscriptionPayloadSubscription;
@@ -568,6 +607,14 @@ export type CareProviderOrderByInput =
   | "contact1_DESC"
   | "email_ASC"
   | "email_DESC";
+
+export type FileOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "url_ASC"
+  | "url_DESC";
 
 export type HospitalOrderByInput =
   | "id_ASC"
@@ -676,6 +723,8 @@ export type PatientOrderByInput =
 export type PatientRecordOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "eventType_ASC"
+  | "eventType_DESC"
   | "visitNo_ASC"
   | "visitNo_DESC"
   | "encounterDate_ASC"
@@ -1012,6 +1061,58 @@ export interface CareProviderWhereInput {
   AND?: Maybe<CareProviderWhereInput[] | CareProviderWhereInput>;
   OR?: Maybe<CareProviderWhereInput[] | CareProviderWhereInput>;
   NOT?: Maybe<CareProviderWhereInput[] | CareProviderWhereInput>;
+}
+
+export type FileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface FileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FileWhereInput[] | FileWhereInput>;
+  OR?: Maybe<FileWhereInput[] | FileWhereInput>;
+  NOT?: Maybe<FileWhereInput[] | FileWhereInput>;
 }
 
 export type HospitalWhereUniqueInput = AtLeastOne<{
@@ -1975,6 +2076,20 @@ export interface PatientRecordWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  eventType?: Maybe<String>;
+  eventType_not?: Maybe<String>;
+  eventType_in?: Maybe<String[] | String>;
+  eventType_not_in?: Maybe<String[] | String>;
+  eventType_lt?: Maybe<String>;
+  eventType_lte?: Maybe<String>;
+  eventType_gt?: Maybe<String>;
+  eventType_gte?: Maybe<String>;
+  eventType_contains?: Maybe<String>;
+  eventType_not_contains?: Maybe<String>;
+  eventType_starts_with?: Maybe<String>;
+  eventType_not_starts_with?: Maybe<String>;
+  eventType_ends_with?: Maybe<String>;
+  eventType_not_ends_with?: Maybe<String>;
   visitNo?: Maybe<Int>;
   visitNo_not?: Maybe<Int>;
   visitNo_in?: Maybe<Int[] | Int>;
@@ -2139,6 +2254,9 @@ export interface PatientRecordWhereInput {
   followUpObservation_not_starts_with?: Maybe<String>;
   followUpObservation_ends_with?: Maybe<String>;
   followUpObservation_not_ends_with?: Maybe<String>;
+  files_every?: Maybe<FileWhereInput>;
+  files_some?: Maybe<FileWhereInput>;
+  files_none?: Maybe<FileWhereInput>;
   AND?: Maybe<PatientRecordWhereInput[] | PatientRecordWhereInput>;
   OR?: Maybe<PatientRecordWhereInput[] | PatientRecordWhereInput>;
   NOT?: Maybe<PatientRecordWhereInput[] | PatientRecordWhereInput>;
@@ -2230,6 +2348,22 @@ export interface CareProviderUpdateManyMutationInput {
   countryCode?: Maybe<Int>;
   contact1?: Maybe<String>;
   email?: Maybe<String>;
+}
+
+export interface FileCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  url: String;
+}
+
+export interface FileUpdateInput {
+  name?: Maybe<String>;
+  url?: Maybe<String>;
+}
+
+export interface FileUpdateManyMutationInput {
+  name?: Maybe<String>;
+  url?: Maybe<String>;
 }
 
 export interface HospitalCreateInput {
@@ -2445,6 +2579,7 @@ export interface PatientRecordCreateManyInput {
 
 export interface PatientRecordCreateInput {
   id?: Maybe<ID_Input>;
+  eventType: String;
   visitNo: Int;
   mp: MedicalPractitionerCreateOneInput;
   hospital: HospitalCreateOneInput;
@@ -2461,6 +2596,12 @@ export interface PatientRecordCreateInput {
   advice?: Maybe<String>;
   query?: Maybe<String>;
   followUpObservation?: Maybe<String>;
+  files?: Maybe<FileCreateManyInput>;
+}
+
+export interface FileCreateManyInput {
+  create?: Maybe<FileCreateInput[] | FileCreateInput>;
+  connect?: Maybe<FileWhereUniqueInput[] | FileWhereUniqueInput>;
 }
 
 export interface AccessRequestCreateManyInput {
@@ -2719,6 +2860,7 @@ export interface PatientRecordUpdateWithWhereUniqueNestedInput {
 }
 
 export interface PatientRecordUpdateDataInput {
+  eventType?: Maybe<String>;
   visitNo?: Maybe<Int>;
   mp?: Maybe<MedicalPractitionerUpdateOneRequiredInput>;
   hospital?: Maybe<HospitalUpdateOneRequiredInput>;
@@ -2735,6 +2877,101 @@ export interface PatientRecordUpdateDataInput {
   advice?: Maybe<String>;
   query?: Maybe<String>;
   followUpObservation?: Maybe<String>;
+  files?: Maybe<FileUpdateManyInput>;
+}
+
+export interface FileUpdateManyInput {
+  create?: Maybe<FileCreateInput[] | FileCreateInput>;
+  update?: Maybe<
+    | FileUpdateWithWhereUniqueNestedInput[]
+    | FileUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | FileUpsertWithWhereUniqueNestedInput[]
+    | FileUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<FileWhereUniqueInput[] | FileWhereUniqueInput>;
+  connect?: Maybe<FileWhereUniqueInput[] | FileWhereUniqueInput>;
+  set?: Maybe<FileWhereUniqueInput[] | FileWhereUniqueInput>;
+  disconnect?: Maybe<FileWhereUniqueInput[] | FileWhereUniqueInput>;
+  deleteMany?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
+  updateMany?: Maybe<
+    FileUpdateManyWithWhereNestedInput[] | FileUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface FileUpdateWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput;
+  data: FileUpdateDataInput;
+}
+
+export interface FileUpdateDataInput {
+  name?: Maybe<String>;
+  url?: Maybe<String>;
+}
+
+export interface FileUpsertWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput;
+  update: FileUpdateDataInput;
+  create: FileCreateInput;
+}
+
+export interface FileScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
+  OR?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
+  NOT?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
+}
+
+export interface FileUpdateManyWithWhereNestedInput {
+  where: FileScalarWhereInput;
+  data: FileUpdateManyDataInput;
+}
+
+export interface FileUpdateManyDataInput {
+  name?: Maybe<String>;
+  url?: Maybe<String>;
 }
 
 export interface PatientRecordUpsertWithWhereUniqueNestedInput {
@@ -2758,6 +2995,20 @@ export interface PatientRecordScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  eventType?: Maybe<String>;
+  eventType_not?: Maybe<String>;
+  eventType_in?: Maybe<String[] | String>;
+  eventType_not_in?: Maybe<String[] | String>;
+  eventType_lt?: Maybe<String>;
+  eventType_lte?: Maybe<String>;
+  eventType_gt?: Maybe<String>;
+  eventType_gte?: Maybe<String>;
+  eventType_contains?: Maybe<String>;
+  eventType_not_contains?: Maybe<String>;
+  eventType_starts_with?: Maybe<String>;
+  eventType_not_starts_with?: Maybe<String>;
+  eventType_ends_with?: Maybe<String>;
+  eventType_not_ends_with?: Maybe<String>;
   visitNo?: Maybe<Int>;
   visitNo_not?: Maybe<Int>;
   visitNo_in?: Maybe<Int[] | Int>;
@@ -2931,6 +3182,7 @@ export interface PatientRecordUpdateManyWithWhereNestedInput {
 }
 
 export interface PatientRecordUpdateManyDataInput {
+  eventType?: Maybe<String>;
   visitNo?: Maybe<Int>;
   observation?: Maybe<String>;
   Tx?: Maybe<String>;
@@ -3618,6 +3870,7 @@ export interface PatientCaseUpdateManyMutationInput {
 }
 
 export interface PatientRecordUpdateInput {
+  eventType?: Maybe<String>;
   visitNo?: Maybe<Int>;
   mp?: Maybe<MedicalPractitionerUpdateOneRequiredInput>;
   hospital?: Maybe<HospitalUpdateOneRequiredInput>;
@@ -3634,9 +3887,11 @@ export interface PatientRecordUpdateInput {
   advice?: Maybe<String>;
   query?: Maybe<String>;
   followUpObservation?: Maybe<String>;
+  files?: Maybe<FileUpdateManyInput>;
 }
 
 export interface PatientRecordUpdateManyMutationInput {
+  eventType?: Maybe<String>;
   visitNo?: Maybe<Int>;
   observation?: Maybe<String>;
   Tx?: Maybe<String>;
@@ -3696,6 +3951,17 @@ export interface CareProviderSubscriptionWhereInput {
   NOT?: Maybe<
     CareProviderSubscriptionWhereInput[] | CareProviderSubscriptionWhereInput
   >;
+}
+
+export interface FileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FileWhereInput>;
+  AND?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+  OR?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+  NOT?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
 }
 
 export interface HospitalSubscriptionWhereInput {
@@ -4140,6 +4406,88 @@ export interface AggregateCareProviderPromise
 
 export interface AggregateCareProviderSubscription
   extends Promise<AsyncIterator<AggregateCareProvider>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface File {
+  id: ID_Output;
+  name: String;
+  url: String;
+}
+
+export interface FilePromise extends Promise<File>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  url: () => Promise<String>;
+}
+
+export interface FileSubscription
+  extends Promise<AsyncIterator<File>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FileNullablePromise
+  extends Promise<File | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  url: () => Promise<String>;
+}
+
+export interface FileConnection {
+  pageInfo: PageInfo;
+  edges: FileEdge[];
+}
+
+export interface FileConnectionPromise
+  extends Promise<FileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FileEdge>>() => T;
+  aggregate: <T = AggregateFilePromise>() => T;
+}
+
+export interface FileConnectionSubscription
+  extends Promise<AsyncIterator<FileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFileSubscription>() => T;
+}
+
+export interface FileEdge {
+  node: File;
+  cursor: String;
+}
+
+export interface FileEdgePromise extends Promise<FileEdge>, Fragmentable {
+  node: <T = FilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FileEdgeSubscription
+  extends Promise<AsyncIterator<FileEdge>>,
+    Fragmentable {
+  node: <T = FileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFile {
+  count: Int;
+}
+
+export interface AggregateFilePromise
+  extends Promise<AggregateFile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFileSubscription
+  extends Promise<AsyncIterator<AggregateFile>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -4866,6 +5214,7 @@ export interface PatientCaseNullablePromise
 
 export interface PatientRecord {
   id: ID_Output;
+  eventType: String;
   visitNo: Int;
   encounterDate: DateTimeOutput;
   observation: String;
@@ -4887,6 +5236,7 @@ export interface PatientRecordPromise
   extends Promise<PatientRecord>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  eventType: () => Promise<String>;
   visitNo: () => Promise<Int>;
   mp: <T = MedicalPractitionerPromise>() => T;
   hospital: <T = HospitalPromise>() => T;
@@ -4904,12 +5254,22 @@ export interface PatientRecordPromise
   advice: () => Promise<String>;
   query: () => Promise<String>;
   followUpObservation: () => Promise<String>;
+  files: <T = FragmentableArray<File>>(args?: {
+    where?: FileWhereInput;
+    orderBy?: FileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface PatientRecordSubscription
   extends Promise<AsyncIterator<PatientRecord>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  eventType: () => Promise<AsyncIterator<String>>;
   visitNo: () => Promise<AsyncIterator<Int>>;
   mp: <T = MedicalPractitionerSubscription>() => T;
   hospital: <T = HospitalSubscription>() => T;
@@ -4927,12 +5287,22 @@ export interface PatientRecordSubscription
   advice: () => Promise<AsyncIterator<String>>;
   query: () => Promise<AsyncIterator<String>>;
   followUpObservation: () => Promise<AsyncIterator<String>>;
+  files: <T = Promise<AsyncIterator<FileSubscription>>>(args?: {
+    where?: FileWhereInput;
+    orderBy?: FileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface PatientRecordNullablePromise
   extends Promise<PatientRecord | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  eventType: () => Promise<String>;
   visitNo: () => Promise<Int>;
   mp: <T = MedicalPractitionerPromise>() => T;
   hospital: <T = HospitalPromise>() => T;
@@ -4950,6 +5320,15 @@ export interface PatientRecordNullablePromise
   advice: () => Promise<String>;
   query: () => Promise<String>;
   followUpObservation: () => Promise<String>;
+  files: <T = FragmentableArray<File>>(args?: {
+    where?: FileWhereInput;
+    orderBy?: FileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface MedicalPractitionerConnection {
@@ -5358,6 +5737,53 @@ export interface CareProviderPreviousValuesSubscription
   countryCode: () => Promise<AsyncIterator<Int>>;
   contact1: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FileSubscriptionPayload {
+  mutation: MutationType;
+  node: File;
+  updatedFields: String[];
+  previousValues: FilePreviousValues;
+}
+
+export interface FileSubscriptionPayloadPromise
+  extends Promise<FileSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FilePreviousValuesPromise>() => T;
+}
+
+export interface FileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FileSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FilePreviousValuesSubscription>() => T;
+}
+
+export interface FilePreviousValues {
+  id: ID_Output;
+  name: String;
+  url: String;
+}
+
+export interface FilePreviousValuesPromise
+  extends Promise<FilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  url: () => Promise<String>;
+}
+
+export interface FilePreviousValuesSubscription
+  extends Promise<AsyncIterator<FilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
 }
 
 export interface HospitalSubscriptionPayload {
@@ -5857,6 +6283,7 @@ export interface PatientRecordSubscriptionPayloadSubscription
 
 export interface PatientRecordPreviousValues {
   id: ID_Output;
+  eventType: String;
   visitNo: Int;
   encounterDate: DateTimeOutput;
   observation: String;
@@ -5878,6 +6305,7 @@ export interface PatientRecordPreviousValuesPromise
   extends Promise<PatientRecordPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  eventType: () => Promise<String>;
   visitNo: () => Promise<Int>;
   encounterDate: () => Promise<DateTimeOutput>;
   observation: () => Promise<String>;
@@ -5899,6 +6327,7 @@ export interface PatientRecordPreviousValuesSubscription
   extends Promise<AsyncIterator<PatientRecordPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  eventType: () => Promise<AsyncIterator<String>>;
   visitNo: () => Promise<AsyncIterator<Int>>;
   encounterDate: () => Promise<AsyncIterator<DateTimeOutput>>;
   observation: () => Promise<AsyncIterator<String>>;
@@ -5988,6 +6417,10 @@ export const models: Model[] = [
   },
   {
     name: "PatientRecord",
+    embedded: false
+  },
+  {
+    name: "File",
     embedded: false
   },
   {

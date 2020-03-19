@@ -1,4 +1,5 @@
 const { GraphQLServer } = require('graphql-yoga');
+require('dotenv').config();
 
 const { prisma } = require('./generated/prisma-client');
 const Query = require('./resolvers/Query');
@@ -16,7 +17,7 @@ const resolvers = {
   MedicalPractitioner,
   Patient,
   PatientCase,
-  PatientRecord,
+  PatientRecord
 };
 
 const server = new GraphQLServer({
@@ -27,7 +28,7 @@ const server = new GraphQLServer({
       ...request,
       prisma
     };
-  },
+  }
 });
 server.start(({ port }) => {
   console.log(`running on port: ${port}`);

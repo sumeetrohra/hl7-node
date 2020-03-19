@@ -108,6 +108,7 @@ type PatientCase {
 
 type PatientRecord {
   id: ID! @id
+  eventType: String!
   visitNo: Int!
   mp: MedicalPractitioner!
   hospital: Hospital!
@@ -125,6 +126,13 @@ type PatientRecord {
   advice: String
   query: String
   followUpObservation: String
+  files: [File]
+}
+
+type File {
+  id: ID! @id
+  name: String!
+  url: String!
 }
 
 type CareProvider {

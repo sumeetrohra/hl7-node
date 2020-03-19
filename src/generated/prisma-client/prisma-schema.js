@@ -380,6 +380,10 @@ type AggregateCareProvider {
   count: Int!
 }
 
+type AggregateFile {
+  count: Int!
+}
+
 type AggregateHospital {
   count: Int!
 }
@@ -711,6 +715,215 @@ input CareProviderWhereUniqueInput {
 }
 
 scalar DateTime
+
+type File {
+  id: ID!
+  name: String!
+  url: String!
+}
+
+type FileConnection {
+  pageInfo: PageInfo!
+  edges: [FileEdge]!
+  aggregate: AggregateFile!
+}
+
+input FileCreateInput {
+  id: ID
+  name: String!
+  url: String!
+}
+
+input FileCreateManyInput {
+  create: [FileCreateInput!]
+  connect: [FileWhereUniqueInput!]
+}
+
+type FileEdge {
+  node: File!
+  cursor: String!
+}
+
+enum FileOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  url_ASC
+  url_DESC
+}
+
+type FilePreviousValues {
+  id: ID!
+  name: String!
+  url: String!
+}
+
+input FileScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  AND: [FileScalarWhereInput!]
+  OR: [FileScalarWhereInput!]
+  NOT: [FileScalarWhereInput!]
+}
+
+type FileSubscriptionPayload {
+  mutation: MutationType!
+  node: File
+  updatedFields: [String!]
+  previousValues: FilePreviousValues
+}
+
+input FileSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FileWhereInput
+  AND: [FileSubscriptionWhereInput!]
+  OR: [FileSubscriptionWhereInput!]
+  NOT: [FileSubscriptionWhereInput!]
+}
+
+input FileUpdateDataInput {
+  name: String
+  url: String
+}
+
+input FileUpdateInput {
+  name: String
+  url: String
+}
+
+input FileUpdateManyDataInput {
+  name: String
+  url: String
+}
+
+input FileUpdateManyInput {
+  create: [FileCreateInput!]
+  update: [FileUpdateWithWhereUniqueNestedInput!]
+  upsert: [FileUpsertWithWhereUniqueNestedInput!]
+  delete: [FileWhereUniqueInput!]
+  connect: [FileWhereUniqueInput!]
+  set: [FileWhereUniqueInput!]
+  disconnect: [FileWhereUniqueInput!]
+  deleteMany: [FileScalarWhereInput!]
+  updateMany: [FileUpdateManyWithWhereNestedInput!]
+}
+
+input FileUpdateManyMutationInput {
+  name: String
+  url: String
+}
+
+input FileUpdateManyWithWhereNestedInput {
+  where: FileScalarWhereInput!
+  data: FileUpdateManyDataInput!
+}
+
+input FileUpdateWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput!
+  data: FileUpdateDataInput!
+}
+
+input FileUpsertWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput!
+  update: FileUpdateDataInput!
+  create: FileCreateInput!
+}
+
+input FileWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  AND: [FileWhereInput!]
+  OR: [FileWhereInput!]
+  NOT: [FileWhereInput!]
+}
+
+input FileWhereUniqueInput {
+  id: ID
+}
 
 type Hospital {
   id: ID!
@@ -1718,6 +1931,12 @@ type Mutation {
   upsertCareProvider(where: CareProviderWhereUniqueInput!, create: CareProviderCreateInput!, update: CareProviderUpdateInput!): CareProvider!
   deleteCareProvider(where: CareProviderWhereUniqueInput!): CareProvider
   deleteManyCareProviders(where: CareProviderWhereInput): BatchPayload!
+  createFile(data: FileCreateInput!): File!
+  updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
+  updateManyFiles(data: FileUpdateManyMutationInput!, where: FileWhereInput): BatchPayload!
+  upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
+  deleteFile(where: FileWhereUniqueInput!): File
+  deleteManyFiles(where: FileWhereInput): BatchPayload!
   createHospital(data: HospitalCreateInput!): Hospital!
   updateHospital(data: HospitalUpdateInput!, where: HospitalWhereUniqueInput!): Hospital
   updateManyHospitals(data: HospitalUpdateManyMutationInput!, where: HospitalWhereInput): BatchPayload!
@@ -2246,6 +2465,7 @@ type PatientPreviousValues {
 
 type PatientRecord {
   id: ID!
+  eventType: String!
   visitNo: Int!
   mp: MedicalPractitioner!
   hospital: Hospital!
@@ -2263,6 +2483,7 @@ type PatientRecord {
   advice: String
   query: String
   followUpObservation: String
+  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File!]
 }
 
 type PatientRecordConnection {
@@ -2273,6 +2494,7 @@ type PatientRecordConnection {
 
 input PatientRecordCreateInput {
   id: ID
+  eventType: String!
   visitNo: Int!
   mp: MedicalPractitionerCreateOneInput!
   hospital: HospitalCreateOneInput!
@@ -2289,6 +2511,7 @@ input PatientRecordCreateInput {
   advice: String
   query: String
   followUpObservation: String
+  files: FileCreateManyInput
 }
 
 input PatientRecordCreateManyInput {
@@ -2304,6 +2527,8 @@ type PatientRecordEdge {
 enum PatientRecordOrderByInput {
   id_ASC
   id_DESC
+  eventType_ASC
+  eventType_DESC
   visitNo_ASC
   visitNo_DESC
   encounterDate_ASC
@@ -2338,6 +2563,7 @@ enum PatientRecordOrderByInput {
 
 type PatientRecordPreviousValues {
   id: ID!
+  eventType: String!
   visitNo: Int!
   encounterDate: DateTime!
   observation: String!
@@ -2370,6 +2596,20 @@ input PatientRecordScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  eventType: String
+  eventType_not: String
+  eventType_in: [String!]
+  eventType_not_in: [String!]
+  eventType_lt: String
+  eventType_lte: String
+  eventType_gt: String
+  eventType_gte: String
+  eventType_contains: String
+  eventType_not_contains: String
+  eventType_starts_with: String
+  eventType_not_starts_with: String
+  eventType_ends_with: String
+  eventType_not_ends_with: String
   visitNo: Int
   visitNo_not: Int
   visitNo_in: [Int!]
@@ -2556,6 +2796,7 @@ input PatientRecordSubscriptionWhereInput {
 }
 
 input PatientRecordUpdateDataInput {
+  eventType: String
   visitNo: Int
   mp: MedicalPractitionerUpdateOneRequiredInput
   hospital: HospitalUpdateOneRequiredInput
@@ -2572,9 +2813,11 @@ input PatientRecordUpdateDataInput {
   advice: String
   query: String
   followUpObservation: String
+  files: FileUpdateManyInput
 }
 
 input PatientRecordUpdateInput {
+  eventType: String
   visitNo: Int
   mp: MedicalPractitionerUpdateOneRequiredInput
   hospital: HospitalUpdateOneRequiredInput
@@ -2591,9 +2834,11 @@ input PatientRecordUpdateInput {
   advice: String
   query: String
   followUpObservation: String
+  files: FileUpdateManyInput
 }
 
 input PatientRecordUpdateManyDataInput {
+  eventType: String
   visitNo: Int
   observation: String
   Tx: String
@@ -2623,6 +2868,7 @@ input PatientRecordUpdateManyInput {
 }
 
 input PatientRecordUpdateManyMutationInput {
+  eventType: String
   visitNo: Int
   observation: String
   Tx: String
@@ -2670,6 +2916,20 @@ input PatientRecordWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  eventType: String
+  eventType_not: String
+  eventType_in: [String!]
+  eventType_not_in: [String!]
+  eventType_lt: String
+  eventType_lte: String
+  eventType_gt: String
+  eventType_gte: String
+  eventType_contains: String
+  eventType_not_contains: String
+  eventType_starts_with: String
+  eventType_not_starts_with: String
+  eventType_ends_with: String
+  eventType_not_ends_with: String
   visitNo: Int
   visitNo_not: Int
   visitNo_in: [Int!]
@@ -2834,6 +3094,9 @@ input PatientRecordWhereInput {
   followUpObservation_not_starts_with: String
   followUpObservation_ends_with: String
   followUpObservation_not_ends_with: String
+  files_every: FileWhereInput
+  files_some: FileWhereInput
+  files_none: FileWhereInput
   AND: [PatientRecordWhereInput!]
   OR: [PatientRecordWhereInput!]
   NOT: [PatientRecordWhereInput!]
@@ -3842,6 +4105,9 @@ type Query {
   careProvider(where: CareProviderWhereUniqueInput!): CareProvider
   careProviders(where: CareProviderWhereInput, orderBy: CareProviderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CareProvider]!
   careProvidersConnection(where: CareProviderWhereInput, orderBy: CareProviderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CareProviderConnection!
+  file(where: FileWhereUniqueInput!): File
+  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
+  filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   hospital(where: HospitalWhereUniqueInput!): Hospital
   hospitals(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hospital]!
   hospitalsConnection(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HospitalConnection!
@@ -3873,6 +4139,7 @@ type Subscription {
   accessRequest(where: AccessRequestSubscriptionWhereInput): AccessRequestSubscriptionPayload
   admin(where: AdminSubscriptionWhereInput): AdminSubscriptionPayload
   careProvider(where: CareProviderSubscriptionWhereInput): CareProviderSubscriptionPayload
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   hospital(where: HospitalSubscriptionWhereInput): HospitalSubscriptionPayload
   icdCodes(where: IcdCodesSubscriptionWhereInput): IcdCodesSubscriptionPayload
   icdSubCodes(where: IcdSubCodesSubscriptionWhereInput): IcdSubCodesSubscriptionPayload
