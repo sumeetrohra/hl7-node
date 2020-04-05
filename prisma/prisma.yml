@@ -1,8 +1,6 @@
-
 datamodel: datamodel.prisma
 
 generate:
   - generator: javascript-client
     output: ../src/generated/prisma-client
-
 endpoint: ${env:PRISMA_STAGE_ENDPOINT}

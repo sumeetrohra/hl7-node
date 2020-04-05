@@ -3,7 +3,7 @@ const { addHospital } = require('./Hospital');
 const {
   addMedicalPractitioner,
   medicalPractitionerLogin,
-  requestPatientAccess
+  requestPatientAccess,
 } = require('./MedicalPractitioner');
 const {
   addPatient,
@@ -14,10 +14,13 @@ const {
   acceptAccessRequest,
   addPatientCase,
   addPatientRecord,
-  addPatientRecordFile
+  addPatientRecordFile,
 } = require('./Patient');
+const { populateIcdCodes, populateIcdSubCodes } = require('./IcdCodes');
 
 module.exports = {
+  populateIcdCodes,
+  populateIcdSubCodes,
   adminSignup,
   adminLogin,
   addHospital,
@@ -32,5 +35,5 @@ module.exports = {
   acceptAccessRequest,
   addPatientCase,
   addPatientRecord,
-  addPatientRecordFile
+  addPatientRecordFile,
 };

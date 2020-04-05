@@ -22,6 +22,8 @@ type SearchPatientData {
 }
 
 type Mutation {
+  populateIcdCodes: Boolean
+  populateIcdSubCodes: Boolean
   adminSignup(email: String!, password: String!): AuthPayloadAdmin!
   adminLogin(email: String, password: String!): AuthPayloadAdmin!
   addHospital(
