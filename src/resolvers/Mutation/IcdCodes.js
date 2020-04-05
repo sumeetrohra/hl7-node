@@ -23,9 +23,3 @@ module.exports = {
   populateIcdCodes,
   populateIcdSubCodes,
 };
-
-// {
-//   icdSubCode: 'A000',
-//   scientificName: 'Cholera due to Vibrio cholerae 01, biovar cholerae',
-//   icdCode: 'A00'
-// }

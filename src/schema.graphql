@@ -1,6 +1,6 @@
 type Query {
-  getIcdCodes: [IcdCodes!]!
-  getIcdSubCodes: [IcdSubCodes!]!
+  getIcdCodes(icdCode: String!): [IcdCodes!]!
+  getIcdSubCodes(icdCodeId: String!): [IcdSubCodes!]!
   getHospitals: [Hospital!]!
   searchPatients(email: String!): [SearchPatientData!]!
   getPatient(patientId: String!): Patient
